@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>饮食喜爱清单 · Food Preferences</title>
+<meta name="description" content="一份持续维护的饮食喜爱清单，分类整理我喜欢吃和不吃的食物。">
+<meta property="og:title" content="饮食喜爱清单 / Food Preferences">
+<meta property="og:description" content="一份持续维护的饮食喜爱清单，分类整理我喜欢吃和不吃的食物。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍽%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@100;300;400;500;700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* 飞书主调 */
+    --blue: #3370FF;
+    --blue-soft: #EAF1FF;
+    --blue-deep: #1456F0;
+
+    /* 中性色 */
+    --ink: #1F2329;
+    --ink-2: #4E5969;
+    --fog: #86909C;
+    --line: #E5E6EB;
+    --line-soft: #F2F3F5;
+    --paper: #FFFFFF;
+    --bg: #F7F8FA;
+
+    /* 强调色 */
+    --warm: #FF7D33;        /* 注意提示 */
+    --warm-soft: #FFF1E8;
+    --red: #F53F3F;         /* 不要 / 禁忌 */
+    --red-soft: #FEE9E8;
+    --green: #00B42A;       /* 推荐 */
+    --green-soft: #E8FFEA;
+    --gold: #C9A24A;        /* 装饰 */
+
+    --serif: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+    --serif-en: 'Instrument Serif', 'Times New Roman', serif;
+    --sans: 'Noto Sans SC', 'PingFang SC', -apple-system, 'Helvetica Neue', sans-serif;
+    --sans-en: 'Manrope', -apple-system, sans-serif;
+    --mono: 'Geist Mono', 'SF Mono', Menlo, monospace;
+
+    --shadow-sm: 0 1px 2px rgba(31, 35, 41, 0.04), 0 2px 8px rgba(31, 35, 41, 0.04);
+    --shadow-md: 0 2px 6px rgba(31, 35, 41, 0.06), 0 8px 24px rgba(31, 35, 41, 0.06);
+    --shadow-lg: 0 4px 12px rgba(31, 35, 41, 0.08), 0 16px 48px rgba(31, 35, 41, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection { background: var(--blue); color: #fff; }
+
+  a { color: var(--blue); text-decoration: none; }
+
+  /* ─────────────────────────── NAV ─────────────────────────── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .nav-brand .logo {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 16px;
+    font-weight: 400;
+    box-shadow: 0 2px 6px rgba(51, 112, 255, 0.3);
+  }
+  .nav-brand .name { color: var(--ink); }
+  .nav-brand .name em {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-2);
+    margin-left: 4px;
+    font-size: 13px;
+  }
+  .nav-meta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 12px;
+    color: var(--fog);
+    font-family: var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .nav-meta .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 6px;
+    vertical-align: middle;
+    box-shadow: 0 0 0 3px rgba(0, 180, 42, 0.18);
+  }
+  .nav-meta .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--line-soft);
+    color: var(--ink-2);
+  }
+  @media (max-width: 720px) {
+    .nav-inner { padding: 14px 20px; }
+    .nav-meta { gap: 10px; font-size: 11px; }
+    .nav-meta .label-hide { display: none; }
+  }
+
+  /* ─────────────────────────── LAYOUT ─────────────────────────── */
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ─────────────────────────── HERO ─────────────────────────── */
+  .hero {
+    padding: 88px 0 72px;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(51, 112, 255, 0.06), transparent 50%),
+      radial-gradient(ellipse 50% 30% at 90% 30%, rgba(255, 125, 51, 0.05), transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--blue-soft);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 28px;
+  }
+  .hero .eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+  .hero h1 {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+  .hero h1 .serif {
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+  .hero h1 .en {
+    font-family: var(--serif-en);
+    font-style: italic;
+    color: var(--blue);
+    font-weight: 400;
+  }
+  .hero .lede {
+    max-width: 620px;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink-2);
+    margin-bottom: 36px;
+  }
+  .hero .stats {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 22px 0;
+    margin-top: 12px;
+  }
+  .hero .stat {
+    flex: 1;
+    border-right: 1px solid var(--line);
+    padding: 0 24px;
+  }
+  .hero .stat:first-child { padding-left: 0; }
+  .hero .stat:last-child { border-right: none; padding-right: 0; }
+  .hero .stat .num {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .hero .stat .num .unit {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--fog);
+    margin-left: 4px;
+    font-weight: 400;
+  }
+  .hero .stat .lbl {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--fog);
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─────────────────────────── TOC ─────────────────────────── */
+  .toc {
+    margin: 56px 0 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .toc a {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 18px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--ink);
+    transition: all .25s cubic-bezier(.2,.8,.2,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .toc a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--blue-soft) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity .25s;
+  }
+  .toc a:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--blue);
+  }
+  .toc a:hover::before { opacity: 1; }
+  .toc a > * { position: relative; z-index: 1; }
+  .toc a .num {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--blue);
+  }
+  .toc a .ttl {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .toc a .ttl-en {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--fog);
+    margin-top: 2px;
+  }
+  @media (max-width: 720px) {
+    .toc { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─────────────────────────── SECTION ─────────────────────────── */
+  section.cat {
+    padding: 80px 0 24px;
+    scroll-margin-top: 80px;
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head .left { display: flex; align-items: flex-end; gap: 24px; }
+  .section-head .num {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 56px;
+    line-height: 0.9;
+    color: var(--blue);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2 {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2 .serif {
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+  .section-head h2 .en {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--fog);
+    margin-left: 10px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .section-head .right {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fog);
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+  @media (max-width: 720px) {
+    .section-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .section-head .num { font-size: 40px; }
+    .section-head h2 { font-size: 28px; }
+    .section-head h2 .en { display: block; margin-left: 0; font-size: 16px; margin-top: 4px; }
+  }
+
+  /* ─────────────────────────── CARD ─────────────────────────── */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card + .card { margin-top: 16px; }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .card-head h3 {
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .card-head .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fog);
+    text-transform: uppercase;
+  }
+
+  /* ─────────────────────────── PRIORITY RANK ─────────────────────────── */
+  .rank {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .rank .row {
+    display: grid;
+    grid-template-columns: 36px 96px 1fr 56px;
+    align-items: center;
+    gap: 16px;
+  }
+  .rank .row .pos {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--fog);
+    font-weight: 400;
+  }
+  .rank .row.top .pos { color: var(--blue); }
+  .rank .row .name {
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .rank .row .name .tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--blue-soft);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 500;
+    vertical-align: middle;
+    font-family: var(--mono);
+    letter-spacing: 0.04em;
+  }
+  .rank .row .bar {
+    height: 8px;
+    background: var(--line-soft);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .rank .row .bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue) 0%, var(--blue-deep) 100%);
+    border-radius: 999px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+  }
+  .rank .row .bar.warm .fill {
+    background: linear-gradient(90deg, var(--warm) 0%, #FF9D4D 100%);
+  }
+  .rank .row .score {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-2);
+    text-align: right;
+    font-weight: 500;
+  }
+  @media (max-width: 720px) {
+    .rank .row { grid-template-columns: 28px 70px 1fr 44px; gap: 10px; }
+    .rank .row .name { font-size: 15px; }
+    .rank .row .name .tag { display: none; }
+  }
+
+  /* ─────────────────────────── CHIPS ─────────────────────────── */
+  .chip-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .chip-group:last-child { border-bottom: none; padding-bottom: 0; }
+  .chip-group:first-child { padding-top: 0; }
+  .chip-group .gname {
+    flex: 0 0 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .chip-group .gname .zh {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .chip-group .gname .en {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--fog);
+  }
+  .chip-group .chips {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink);
+    transition: all .2s;
+    cursor: default;
+  }
+  .chip:hover {
+    background: var(--blue-soft);
+    border-color: var(--blue);
+    color: var(--blue);
+    transform: translateY(-1px);
+  }
+  .chip.star { background: var(--blue-soft); border-color: rgba(51, 112, 255, 0.3); color: var(--blue); font-weight: 500; }
+  .chip.star::before { content: '★'; font-size: 11px; color: var(--blue); }
+  .chip.no { background: var(--red-soft); border-color: rgba(245, 63, 63, 0.2); color: var(--red); text-decoration: line-through; text-decoration-thickness: 1.5px; text-decoration-color: rgba(245, 63, 63, 0.5); }
+  .chip.no:hover { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+  @media (max-width: 720px) {
+    .chip-group { flex-direction: column; gap: 10px; padding: 14px 0; }
+    .chip-group .gname { flex: none; }
+  }
+
+  /* ─────────────────────────── REQUIREMENTS LIST (面包) ─────────────────────────── */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .req-col h4 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+  .req-col.yes h4 { color: var(--green); }
+  .req-col.no h4 { color: var(--red); }
+  .req-col h4 .ico {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .req-col.yes h4 .ico { background: var(--green-soft); color: var(--green); }
+  .req-col.no h4 .ico { background: var(--red-soft); color: var(--red); }
+  .req-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .req-col li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .req-col li::before {
+    content: '';
+    flex: 0 0 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-top: 9px;
+    opacity: 0.5;
+  }
+  .req-col.yes li { color: var(--ink); }
+  .req-col.no li { color: var(--ink-2); }
+  .req-col.no li::before { background: var(--red); opacity: 1; }
+  .req-col.yes li::before { background: var(--green); opacity: 1; }
+  @media (max-width: 720px) {
+    .req-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  /* ─────────────────────────── NOTE CALLOUT ─────────────────────────── */
+  .note {
+    margin-top: 24px;
+    padding: 18px 22px;
+    background: var(--warm-soft);
+    border-left: 3px solid var(--warm);
+    border-radius: 0 12px 12px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .note .ico {
+    flex: 0 0 22px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--warm);
+    color: #fff;
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .note .body { flex: 1; font-size: 14px; line-height: 1.65; color: var(--ink); }
+  .note .body strong {
+    font-weight: 500;
+    color: #8A4500;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-right: 8px;
+  }
+  .note.red { background: var(--red-soft); border-left-color: var(--red); }
+  .note.red .ico { background: var(--red); }
+  .note.red .body strong { color: #8B1414; }
+
+  /* ─────────────────────────── FOOTER ─────────────────────────── */
+  footer {
+    margin-top: 120px;
+    padding: 60px 0 80px;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+  footer .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+  }
+  footer .foot .left {
+    max-width: 480px;
+  }
+  footer .foot .left .mark {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  footer .foot .left .mark .heart {
+    color: var(--warm);
+    font-family: var(--serif-en);
+    font-style: italic;
+  }
+  footer .foot .left p {
+    font-size: 13px;
+    color: var(--fog);
+    line-height: 1.7;
+  }
+  footer .foot .right {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--fog);
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+  @media (max-width: 720px) {
+    footer .foot { flex-direction: column; align-items: flex-start; gap: 24px; }
+    footer .foot .right { text-align: left; }
+  }
+
+  /* ─────────────────────────── FADE ON SCROLL ─────────────────────────── */
+  [data-fade] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1);
+  }
+  [data-fade].in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────────── NAV ─────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="logo">f</div>
+      <div class="name">饮食喜爱清单 <em>Food Preferences</em></div>
+    </div>
+    <div class="nav-meta">
+      <span><span class="dot"></span><span class="label-hide">持续维护中 </span>LIVE</span>
+      <span class="pill">UPDATED · 2026.05.13</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────── HERO ─────────────── -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">A LIVING DOCUMENT · V.1.0</div>
+    <h1>
+      关于<span class="serif">吃</span>这件事，<br>
+      我希望你<span class="en">知道的</span>。
+    </h1>
+    <p class="lede">这是一份持续维护的饮食偏好清单。包含五个大类、三十余项食材的喜爱排序与忌口说明，写给愿意一起好好吃饭的人。轻量、坦诚，欢迎收藏。</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="num">5<span class="unit">cats</span></div>
+        <div class="lbl">食物分类</div>
+      </div>
+      <div class="stat">
+        <div class="num">30<span class="unit">+</span></div>
+        <div class="lbl">食材记录</div>
+      </div>
+      <div class="stat">
+        <div class="num">4<span class="unit">notes</span></div>
+        <div class="lbl">注意事项</div>
+      </div>
+      <div class="stat">
+        <div class="num">∞<span class="unit"></span></div>
+        <div class="lbl">持续维护</div>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <div class="toc">
+      <a href="#meat">
+        <span class="num">01</span>
+        <span class="ttl">肉类</span>
+        <span class="ttl-en">Meat</span>
+      </a>
+      <a href="#seafood">
+        <span class="num">02</span>
+        <span class="ttl">海鲜</span>
+        <span class="ttl-en">Seafood</span>
+      </a>
+      <a href="#fruit">
+        <span class="num">03</span>
+        <span class="ttl">水果</span>
+        <span class="ttl-en">Fruit</span>
+      </a>
+      <a href="#veg">
+        <span class="num">04</span>
+        <span class="ttl">蔬菜</span>
+        <span class="ttl-en">Vegetable</span>
+      </a>
+      <a href="#bread">
+        <span class="num">05</span>
+        <span class="ttl">面包</span>
+        <span class="ttl-en">Bread</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ─────────────── 01 MEAT ─────────────── -->
+  <section id="meat" class="cat" data-fade>
+    <div class="section-head">
+      <div class="left">
+        <span class="num">01</span>
+        <h2>肉<span class="serif">类</span><span class="en">Meat</span></h2>
+      </div>
+      <div class="right">4 种 · 按喜爱度排序<br>BEEF > PORK > CHICKEN > LAMB</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>喜爱度排序</h3>
+        <span class="meta">PRIORITY · DESC</span>
+      </div>
+      <div class="rank">
+        <div class="row top">
+          <span class="pos">i.</span>
+          <span class="name">牛肉<span class="tag">TOP</span></span>
+          <div class="bar"><div class="fill" data-width="96"></div></div>
+          <span class="score">96</span>
+        </div>
+        <div class="row">
+          <span class="pos">ii.</span>
+          <span class="name">猪肉</span>
+          <div class="bar"><div class="fill" data-width="84"></div></div>
+          <span class="score">84</span>
+        </div>
+        <div class="row">
+          <span class="pos">iii.</span>
+          <span class="name">鸡肉</span>
+          <div class="bar"><div class="fill" data-width="72"></div></div>
+          <span class="score">72</span>
+        </div>
+        <div class="row">
+          <span class="pos">iv.</span>
+          <span class="name">羊肉</span>
+          <div class="bar"><div class="fill" data-width="58"></div></div>
+          <span class="score">58</span>
+        </div>
+      </div>
+      <div class="note red">
+        <span class="ico">!</span>
+        <div class="body"><strong>注意 / Note</strong>不吃肥肉——挑瘦的部位，肥瘦相间也尽量去掉肥的那部分。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 02 SEAFOOD ─────────────── -->
+  <section id="seafood" class="cat" data-fade>
+    <div class="section-head">
+      <div class="left">
+        <span class="num">02</span>
+        <h2>海<span class="serif">鲜</span><span class="en">Seafood</span></h2>
+      </div>
+      <div class="right">3 种 · 重壳类 > 鱼类<br>CRAB > SHRIMP > FISH</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>喜爱度排序</h3>
+        <span class="meta">PRIORITY · DESC</span>
+      </div>
+      <div class="rank">
+        <div class="row top">
+          <span class="pos">i.</span>
+          <span class="name">螃蟹<span class="tag">TOP</span></span>
+          <div class="bar warm"><div class="fill" data-width="95"></div></div>
+          <span class="score">95</span>
+        </div>
+        <div class="row">
+          <span class="pos">ii.</span>
+          <span class="name">虾</span>
+          <div class="bar warm"><div class="fill" data-width="86"></div></div>
+          <span class="score">86</span>
+        </div>
+        <div class="row">
+          <span class="pos">iii.</span>
+          <span class="name">鱼肉</span>
+          <div class="bar warm"><div class="fill" data-width="68"></div></div>
+          <span class="score">68</span>
+        </div>
+      </div>
+      <div class="note">
+        <span class="ico">i</span>
+        <div class="body"><strong>注意 / Note</strong>鱼肉不吃带刺的——已经挑好刺的鱼肉、鱼柳、龙利鱼等完全 OK，自己挑刺这件事免了。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 03 FRUIT ─────────────── -->
+  <section id="fruit" class="cat" data-fade>
+    <div class="section-head">
+      <div class="left">
+        <span class="num">03</span>
+        <h2>水<span class="serif">果</span><span class="en">Fruit</span></h2>
+      </div>
+      <div class="right">17 项 · 6 个子分类<br>BERRIES · GRAPES · TROPICAL ETC.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>按子分类罗列</h3>
+        <span class="meta">★ 表示偏好首选</span>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">莓 果</span><span class="en">Berries</span></div>
+        <div class="chips">
+          <span class="chip star">草莓</span>
+          <span class="chip star">蓝莓</span>
+          <span class="chip star">车厘子</span>
+        </div>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">葡萄类</span><span class="en">Grapes</span></div>
+        <div class="chips">
+          <span class="chip">红提</span>
+          <span class="chip">青提</span>
+          <span class="chip">葡萄</span>
+        </div>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">热带</span><span class="en">Tropical</span></div>
+        <div class="chips">
+          <span class="chip">菠萝</span>
+          <span class="chip">荔枝</span>
+          <span class="chip">桂圆</span>
+        </div>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">瓜·核果</span><span class="en">Melon &amp; Stone</span></div>
+        <div class="chips">
+          <span class="chip">哈密瓜</span>
+          <span class="chip">芒果</span>
+          <span class="chip">猕猴桃</span>
+        </div>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">柑橘·小果</span><span class="en">Citrus &amp; Small</span></div>
+        <div class="chips">
+          <span class="chip">柚子</span>
+          <span class="chip">橙子</span>
+          <span class="chip">圣女果</span>
+        </div>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">特 色</span><span class="en">Specialty</span></div>
+        <div class="chips">
+          <span class="chip">榴莲</span>
+          <span class="chip">香蕉</span>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="ico">i</span>
+        <div class="body"><strong>注意 / Note</strong>太甜的还是少一些——成熟度刚刚好就行，过熟过甜会有点腻。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 04 VEG ─────────────── -->
+  <section id="veg" class="cat" data-fade>
+    <div class="section-head">
+      <div class="left">
+        <span class="num">04</span>
+        <h2>蔬<span class="serif">菜</span><span class="en">Vegetable</span></h2>
+      </div>
+      <div class="right">5 项 · 1 项禁忌<br>EXCEPT MUSHROOM</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>偏爱的蔬菜</h3>
+        <span class="meta">DAILY GREENS</span>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">常 备</span><span class="en">Everyday</span></div>
+        <div class="chips">
+          <span class="chip star">油麦菜</span>
+          <span class="chip star">花菜</span>
+          <span class="chip star">莲藕</span>
+          <span class="chip star">玉米</span>
+          <span class="chip star">青菜</span>
+        </div>
+      </div>
+
+      <div class="chip-group">
+        <div class="gname"><span class="zh">不 吃</span><span class="en">Avoid</span></div>
+        <div class="chips">
+          <span class="chip no">香菇</span>
+        </div>
+      </div>
+
+      <div class="note red">
+        <span class="ico">!</span>
+        <div class="body"><strong>注意 / Note</strong>除了香菇都可以——其他蔬菜大部分都接受，香菇这一项请避开。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── 05 BREAD ─────────────── -->
+  <section id="bread" class="cat" data-fade>
+    <div class="section-head">
+      <div class="left">
+        <span class="num">05</span>
+        <h2>面<span class="serif">包</span><span class="en">Bread</span></h2>
+      </div>
+      <div class="right">关键词 · 软 / 淡 / 朴素<br>SOFT · LIGHT · PLAIN</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>挑选标准</h3>
+        <span class="meta">DO &amp; DON'T</span>
+      </div>
+
+      <div class="req-grid">
+        <div class="req-col yes">
+          <h4><span class="ico">✓</span>喜欢的样子</h4>
+          <ul>
+            <li>松软 · 好消化</li>
+            <li>清淡 · 不要太甜</li>
+            <li>面包胚、华夫饼之类</li>
+            <li>朴素无添加的款式</li>
+          </ul>
+        </div>
+        <div class="req-col no">
+          <h4><span class="ico">✕</span>请绕开的</h4>
+          <ul>
+            <li>芝士口味 / 重芝士夹层</li>
+            <li>肉松、肉松沙拉</li>
+            <li>奶油 / 厚重奶油裱花</li>
+            <li>过甜的（糖霜、糖珠装饰）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="ico">i</span>
+        <div class="body"><strong>建议 / Tip</strong>原味贝果、可颂、欧式软欧包、华夫饼、白吐司、原味面包胚，这些方向通常都不会出错。</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<footer>
+  <div class="wrap foot">
+    <div class="left">
+      <div class="mark">用心吃饭 <span class="heart">·</span> 互相照顾</div>
+      <p>这份清单会持续更新。如果你看到这里，并且愿意为我留意这些细节——已经是很温柔的事了，谢谢你。</p>
+    </div>
+    <div class="right">
+      <strong style="font-family:var(--serif-en);font-style:italic;font-weight:400;font-size:14px;color:var(--ink);letter-spacing:0;text-transform:none;">Food Preferences</strong><br>
+      MAINTAINED BY · OWNER<br>
+      © 2026 · A LIVING DOC
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Fade-in observer
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        fadeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('[data-fade]').forEach(el => fadeObs.observe(el));
+
+  // Animate priority bars when visible
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const bars = e.target.querySelectorAll('.bar .fill');
+        bars.forEach((b, i) => {
+          setTimeout(() => { b.style.width = b.dataset.width + '%'; }, i * 120);
+        });
+        barObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.rank').forEach(el => barObs.observe(el));
+</script>
+
+</body>
+</html>
