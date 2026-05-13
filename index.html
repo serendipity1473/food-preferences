@@ -673,6 +673,98 @@
     footer .foot .right { text-align: left; }
   }
 
+  /* ─────────────────────────── NAV CATEGORIES ─────────────────────────── */
+  .nav-cats {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav-cats a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-2);
+    transition: color .2s, background .2s;
+  }
+  .nav-cats a .nc-num {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--fog);
+    font-weight: 400;
+    transition: color .2s;
+  }
+  .nav-cats a:hover { color: var(--blue); background: var(--blue-soft); }
+  .nav-cats a:hover .nc-num { color: var(--blue); }
+  .nav-cats a.active {
+    color: var(--blue);
+    background: var(--blue-soft);
+    font-weight: 500;
+  }
+  .nav-cats a.active .nc-num { color: var(--blue); }
+  @media (max-width: 960px) {
+    .nav-cats { display: none; }
+  }
+
+  /* ─────────────────────────── HERO BYLINE ─────────────────────────── */
+  .hero .byline {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 17px;
+    color: var(--ink-2);
+    margin: -6px 0 28px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .hero .byline .by-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--fog);
+    text-transform: uppercase;
+  }
+  .hero .byline .by-name {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--blue);
+    font-size: 24px;
+    line-height: 1;
+    border-bottom: 1px solid rgba(51, 112, 255, 0.3);
+    padding-bottom: 2px;
+  }
+
+  /* ─────────────────────────── FOOTER LUNA SIGNATURE ─────────────────────────── */
+  footer .luna-sig {
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 14px;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+  footer .luna-sig .sig-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--fog);
+    text-transform: uppercase;
+  }
+  footer .luna-sig .sig-name {
+    font-family: var(--serif-en);
+    font-style: italic;
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--blue);
+    line-height: 1;
+  }
+
   /* ─────────────────────────── FADE ON SCROLL ─────────────────────────── */
   [data-fade] {
     opacity: 0;
@@ -694,9 +786,16 @@
       <div class="logo">f</div>
       <div class="name">饮食喜爱清单 <em>Food Preferences</em></div>
     </div>
+    <div class="nav-cats">
+      <a href="#meat"><span class="nc-num">01</span>肉类</a>
+      <a href="#seafood"><span class="nc-num">02</span>海鲜</a>
+      <a href="#fruit"><span class="nc-num">03</span>水果</a>
+      <a href="#veg"><span class="nc-num">04</span>蔬菜</a>
+      <a href="#bread"><span class="nc-num">05</span>面包</a>
+    </div>
     <div class="nav-meta">
       <span><span class="dot"></span><span class="label-hide">持续维护中 </span>LIVE</span>
-      <span class="pill">UPDATED · 2026.05.13</span>
+      <span class="pill">UPDATED · <span id="update-time">2026.05.13</span></span>
     </div>
   </div>
 </nav>
@@ -709,6 +808,10 @@
       关于<span class="serif">吃</span>这件事，<br>
       我希望你<span class="en">知道的</span>。
     </h1>
+    <p class="byline">
+      <span class="by-label">From</span>
+      <span class="by-name">Luna</span>
+    </p>
     <p class="lede">这是一份持续维护的饮食偏好清单。包含五个大类、三十余项食材的喜爱排序与忌口说明，写给愿意一起好好吃饭的人。轻量、坦诚，欢迎收藏。</p>
     <div class="stats">
       <div class="stat">
@@ -1021,10 +1124,15 @@
     <div class="left">
       <div class="mark">用心吃饭 <span class="heart">·</span> 互相照顾</div>
       <p>这份清单会持续更新。如果你看到这里，并且愿意为我留意这些细节——已经是很温柔的事了，谢谢你。</p>
+      <div class="luna-sig">
+        <span class="sig-label">— Signed</span>
+        <span class="sig-name">Luna</span>
+      </div>
     </div>
     <div class="right">
       <strong style="font-family:var(--serif-en);font-style:italic;font-weight:400;font-size:14px;color:var(--ink);letter-spacing:0;text-transform:none;">Food Preferences</strong><br>
-      MAINTAINED BY · OWNER<br>
+      CURATED BY · LUNA<br>
+      LAST UPDATE · <span id="update-time-foot">—</span><br>
       © 2026 · A LIVING DOC
     </div>
   </div>
@@ -1055,6 +1163,37 @@
     });
   }, { threshold: 0.3 });
   document.querySelectorAll('.rank').forEach(el => barObs.observe(el));
+
+  // Auto-update timestamp from file's last modification time
+  (function() {
+    const d = new Date(document.lastModified);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const fmtNav = `${yyyy}.${mm}.${dd}`;
+    const fmtFoot = `${yyyy}-${mm}-${dd}`;
+    const navEl = document.getElementById('update-time');
+    const footEl = document.getElementById('update-time-foot');
+    if (navEl) navEl.textContent = fmtNav;
+    if (footEl) footEl.textContent = fmtFoot;
+  })();
+
+  // Scroll-spy: highlight current section in top nav + TOC
+  (function() {
+    const navLinks = document.querySelectorAll('.nav-cats a');
+    const tocLinks = document.querySelectorAll('.toc a');
+    const setActive = (id) => {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    };
+    const spyObs = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible.length) setActive(visible[0].target.id);
+    }, { rootMargin: '-25% 0px -60% 0px', threshold: 0 });
+    document.querySelectorAll('section.cat').forEach(s => spyObs.observe(s));
+  })();
 </script>
 
 </body>
