@@ -227,9 +227,10 @@
     flex: 1;
     border-right: 1px solid var(--line);
     padding: 0 24px;
+    text-align: center;
   }
-  .hero .stat:first-child { padding-left: 0; }
-  .hero .stat:last-child { border-right: none; padding-right: 0; }
+  .hero .stat:first-child { padding-left: 24px; }
+  .hero .stat:last-child { border-right: none; padding-right: 24px; }
   .hero .stat .num {
     font-family: var(--sans);
     font-weight: 300;
@@ -792,11 +793,11 @@
     }
     .hero .stat {
       border-right: none;
-      padding: 16px 0;
+      padding: 16px;
       min-width: 0;
     }
-    .hero .stat:first-child { padding-left: 0; }
-    .hero .stat:last-child { padding-right: 0; }
+    .hero .stat:first-child { padding-left: 16px; }
+    .hero .stat:last-child { padding-right: 16px; }
     .hero .stat:nth-child(odd) {
       border-right: 1px solid var(--line);
       padding-right: 16px;
