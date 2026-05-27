@@ -765,6 +765,163 @@
     line-height: 1;
   }
 
+  /* ─────────────────────────── MOBILE REFINEMENTS ─────────────────────────── */
+  @media (max-width: 720px) {
+    .wrap { padding: 0 20px; }
+
+    .hero { padding: 64px 0 52px; }
+    .hero .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 11vw, 44px);
+      line-height: 1.14;
+      letter-spacing: 0;
+    }
+    .hero .lede {
+      font-size: 15px;
+      line-height: 1.72;
+      margin-bottom: 28px;
+    }
+    .hero .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 0;
+    }
+    .hero .stat {
+      border-right: none;
+      padding: 16px 0;
+      min-width: 0;
+    }
+    .hero .stat:first-child { padding-left: 0; }
+    .hero .stat:last-child { padding-right: 0; }
+    .hero .stat:nth-child(odd) {
+      border-right: 1px solid var(--line);
+      padding-right: 16px;
+    }
+    .hero .stat:nth-child(even) { padding-left: 16px; }
+    .hero .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .hero .stat .num { font-size: 32px; }
+    .hero .stat .num .unit { font-size: 16px; }
+    .hero .stat .lbl {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+
+    .toc {
+      margin-top: 40px;
+      gap: 8px;
+    }
+    .toc a {
+      padding: 14px 12px;
+      border-radius: 10px;
+    }
+    .toc a .ttl { font-size: 15px; }
+
+    section.cat {
+      padding: 64px 0 16px;
+      scroll-margin-top: 76px;
+    }
+    .section-head {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+    }
+    .section-head .left { gap: 16px; }
+    .section-head .right {
+      text-align: left;
+      letter-spacing: 0.1em;
+    }
+
+    .card {
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .card-head {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .chip {
+      max-width: 100%;
+      padding: 8px 12px;
+      white-space: normal;
+    }
+    .note {
+      margin-top: 20px;
+      padding: 16px 18px;
+      gap: 12px;
+    }
+
+    footer { margin-top: 80px; padding: 48px 0 60px; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-inner {
+      padding: 12px 16px;
+      gap: 12px;
+    }
+    .nav-brand {
+      gap: 8px;
+      min-width: 0;
+      flex-shrink: 1;
+    }
+    .nav-brand .logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      flex: 0 0 auto;
+    }
+    .nav-brand .name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nav-brand .name em { display: none; }
+    .nav-meta {
+      flex-shrink: 0;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.02em;
+    }
+    .nav-meta > span:first-child { display: none; }
+    .nav-meta .dot {
+      width: 5px;
+      height: 5px;
+      margin-right: 4px;
+      box-shadow: 0 0 0 2px rgba(0, 180, 42, 0.16);
+    }
+    .nav-meta .pill { padding: 3px 7px; }
+
+    .wrap { padding: 0 16px; }
+    .hero { padding: 52px 0 44px; }
+    .hero .eyebrow {
+      max-width: 100%;
+      letter-spacing: 0.1em;
+    }
+    .hero h1 { font-size: clamp(32px, 12vw, 40px); }
+    .hero .byline {
+      margin-bottom: 22px;
+      font-size: 15px;
+    }
+    .hero .byline .by-name { font-size: 22px; }
+    .hero .stats { margin-top: 8px; }
+    .hero .stat:nth-child(odd) { padding-right: 12px; }
+    .hero .stat:nth-child(even) { padding-left: 12px; }
+    .hero .stat .num { font-size: 28px; }
+    .hero .stat .num .unit { font-size: 14px; }
+
+    .toc { margin-top: 34px; }
+    .toc a { padding: 13px 11px; }
+    .toc a .ttl-en { font-size: 11px; }
+
+    .card { padding: 20px; }
+    .note { padding: 14px 16px; }
+  }
+
   /* ─────────────────────────── FADE ON SCROLL ─────────────────────────── */
   [data-fade] {
     opacity: 0;
